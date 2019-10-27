@@ -1,6 +1,7 @@
 var mysql = require('promise-mysql');
 var info = require('../config');
 
+
 //get an article by its id
 exports.getById = async (id) => {
    try {
@@ -12,9 +13,9 @@ exports.getById = async (id) => {
            
        }
        //this is the sql statement to execute
-       let sql = `SELECT * FROM articles
-                  WHERE id = ${id}
-               `;
+       let sql = `SELECT * FROM articles WHERE id = ${id} `;
+
+
        //wait for the async code to finish
        let data = await connection.query(sql);
     
@@ -26,7 +27,7 @@ exports.getById = async (id) => {
     
     } catch (error) {
         //if an error occured please log it and throw an exception
-        console.log(error);
+        throw new Error(error)
         //ctx.throw(500, 'An Error has occured');
     }
 }
@@ -47,7 +48,9 @@ exports.getAll = async (page, limit, order)=> {
         return data;
     
     } catch (error) {
-        console.log(error);
+        if(error.status=== undefined)
+            error.status = 500;
+        throw error;
         //ctx.throw(500, 'An Error has occured');
     }  
 }
@@ -55,11 +58,13 @@ exports.add = async (article) => {
     try {
     
         const connection = await mysql.createConnection(info.config);
+
+        if(article.title === undefined){
+            throw {message: 'title is required', status:400};
+        }
     
     //this is the sql statement to execute
-        let sql = `INSERT INTO articles
-                    SET ?
-                `;
+        let sql = `INSERT INTO articles SET ?`;
         let data = await connection.query(sql, article);
     
         await connection.end();
@@ -67,7 +72,9 @@ exports.add = async (article) => {
         return data;
     
     } catch (error) {
-        console.log(error);
+        if(error.status === undefined)
+            error.status = 500;
+        throw error;
         //ctx.throw(500, 'An Error has occured');
         }
     } 
