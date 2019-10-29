@@ -43,7 +43,7 @@ exports.getAll = async (page, limit, order)=> {
                 `;
         let data = await connection.query(sql);
     
-        await connection.end();
+            await connection.end();
     
         return data;
     

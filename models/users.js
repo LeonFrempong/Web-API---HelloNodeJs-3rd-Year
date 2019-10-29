@@ -1,7 +1,7 @@
 'use strict';
 
 var mysql = require('promise-mysql');
-var bcrypt = require('bycryptjs');
+var bcrypt = require('bcryptjs');
 
 var info = require('../config');
 

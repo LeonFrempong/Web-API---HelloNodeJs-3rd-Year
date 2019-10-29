@@ -3,11 +3,14 @@ const cors = require('@koa/cors');
 const passport = require('koa-passport');
 
 
+
+
+
 //import all the routes 
 var welcome = require('./routes/welcome');
 var admin = require('./routes/admin');
 var articles = require('./routes/articles.js');
-var articles =require('./routes/users')
+var users =require('./routes/users')
 
 
 var app = new Koa();
@@ -15,14 +18,17 @@ var app = new Koa();
 app.use(cors());
 
 
+
 require('./auth');
-app.use(passport.initialize());
+
+app.use(passport.initialize()); 
 
 //apply theoutes as a middleware
 app.use(welcome.routes());
 app.use(admin.routes());
 app.use(articles.routes());
 app.use(users.routes());
+app.use(cors());
 
 
 var port = process.env.PORT || 3000;

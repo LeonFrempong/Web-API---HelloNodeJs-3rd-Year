@@ -1,7 +1,7 @@
 var mysql = require('promise-mysql');
 var info = require('../config');
 
-exports.createTables = async (id) => {
+exports.createTables = async () => {
     
     try{
         const connection = await mysql.createConnection(info.config);
@@ -37,7 +37,7 @@ exports.createTables = async (id) => {
         
     }   catch (error) {
             console.log(error);
-            ctx.throw(500, 'An Error has occured'); 
+            
     };
         
 };
